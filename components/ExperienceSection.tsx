@@ -8,8 +8,8 @@ interface ExperienceSectionProps {
 
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experiences }) => {
   return (
-    <motion.section className="mb-16" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={{ hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } } }} >
-      <motion.h2 className="text-base font-mono text-terminal-green mb-8 tracking-wider" variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5 } } }} >
+    <motion.section className="mb-16" initial="hidden" animate="visible" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", delay: 0.3 } } }} >
+      <motion.h2 className="text-base font-mono text-terminal-green mb-8 tracking-wider" variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.4 } } }} >
         <span className="text-terminal-highlight">const</span> <span className="text-terminal-pink">experience</span>
       </motion.h2>
       <div className="space-y-10">
