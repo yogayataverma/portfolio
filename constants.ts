@@ -99,7 +99,7 @@ export const PORTFOLIO_DATA: ProfileData = {
     },
     {
       category: "Tools & Technologies",
-      items: "Postman, Swagger, Selenium, Redis, JWT, OpenAI API, PayPal, Chart.js, Webhooks, Ollama, OAuth"
+      items: "Postman, Swagger, Selenium, Redis, JWT, OpenAI API, PayPal, Chart.js, Webhooks, Ollama, OAuth, Canvas.js"
     }
   ],
   socials: [
