@@ -1,0 +1,54 @@
+---
+title: 'Microservices Architecture in Healthcare: Pegasus Project'
+publishedAt: '2025-12-10'
+summary: 'How we built a microservice-based healthcare system to digitize clinical workflows from sample collection to report dispatch.'
+---
+
+Healthcare systems demand reliability, security, and precision. When I joined the **Pegasus** project, we were tasked with digitizing the entire workflow of clinical sample collection, storage, tracking, and report dispatch.
+
+## Why Microservices?
+
+The complexity of healthcare workflows made microservices the obvious choice:
+
+- **Isolation**: Each service handles a specific domain (samples, buildings, reports)
+- **Scalability**: Individual services can scale based on demand
+- **Maintainability**: Teams can work independently on different services
+- **Resilience**: Failure in one service doesn't bring down the entire system
+
+## Sample-to-Building Allocation Service
+
+One of my key contributions was developing a dedicated microservice for accurate sample-to-building allocation. This service needed to:
+
+1. Track sample locations in real-time
+2. Optimize allocation based on building capacity
+3. Handle edge cases (urgent samples, special storage requirements)
+4. Provide audit trails for compliance
+
+## Observability: The Unsung Hero
+
+In a distributed system, **you can't fix what you can't see**. We implemented comprehensive logging and activity tracking across all services. This wasn't just about debugging - it was about understanding system behavior and catching issues before they became problems.
+
+### Logging Strategy
+
+- Structured logging with correlation IDs across services
+- Centralized log aggregation
+- Real-time alerting for critical events
+- Performance metrics for every endpoint
+
+## Performance Optimizations
+
+We applied several service-level optimizations:
+
+- **Caching**: Frequently accessed data cached at the service level
+- **Database connection pooling**: Reduced connection overhead
+- **Batch processing**: Grouped operations where possible
+- **Asynchronous operations**: Non-blocking I/O for better throughput
+
+## Lessons Learned
+
+1. **Start with observability**: You need visibility from day one
+2. **Service boundaries matter**: Poorly defined boundaries lead to tight coupling
+3. **Test failure scenarios**: Things will fail; plan for it
+4. **Documentation is critical**: In a distributed system, good docs save hours of debugging
+
+Microservices aren't a silver bullet, but for complex domains like healthcare, they provide the flexibility and reliability needed to build systems that people depend on.

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router';
+import { motion } from 'framer-motion';
 import { MDXProvider } from '@mdx-js/react';
 
 const components = {
@@ -54,25 +55,25 @@ export const BlogPost: React.FC = () => {
     }
 
     return (
-        <div className="animate-fade-in max-w-none">
-            <Link to="/blog" className="inline-flex items-center text-xs text-gray-500 hover:text-terminal-pink mb-12 transition-colors font-mono">
+        <motion.div className="max-w-none" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} >
+            <Link to="/blog" className="inline-flex items-center gap-2 text-xs text-gray-500 hover:text-terminal-pink mb-12 transition-colors font-mono">
                 <span className="text-terminal-pink">←</span> <span className="text-terminal-highlight">return</span>
             </Link>
 
-            <header className="mb-12">
+            <motion.header className="mb-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2, duration: 0.4 }} >
                 <h1 className="text-2xl md:text-3xl font-medium mb-2 text-terminal-green">
                     {meta?.title}
                 </h1>
                 <div className="flex items-center text-xs text-gray-600 font-mono">
                     <time dateTime={meta?.publishedAt}>{meta?.publishedAt}</time>
                 </div>
-            </header>
+            </motion.header>
 
-            <div className="prose prose-invert prose-lg max-w-none">
+            <motion.div className="prose prose-invert prose-lg max-w-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.5 }} >
                 <MDXProvider components={components}>
                     <Content />
                 </MDXProvider>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 };

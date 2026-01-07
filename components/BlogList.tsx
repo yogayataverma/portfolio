@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import { motion } from 'framer-motion';
 import { MDXPost } from '../types';
 
 export const BlogList: React.FC = () => {
@@ -26,13 +27,13 @@ export const BlogList: React.FC = () => {
     }, []);
 
     return (
-        <div className="animate-fade-in">
-            <h2 className="text-base font-mono text-terminal-green mb-8 tracking-wider">
+        <motion.div initial="hidden" animate="visible" variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.4, staggerChildren: 0.08 } } }} >
+            <motion.h2 className="text-base font-mono text-terminal-green mb-8 tracking-wider" variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} >
                 <span className="text-terminal-pink">async</span> <span className="text-terminal-highlight">blog</span>
-            </h2>
+            </motion.h2>
             <div className="space-y-8">
                 {posts.map((post) => (
-                    <article key={post.slug} className="group">
+                    <motion.article key={post.slug} className="group" variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } }} whileHover={{ x: 4, transition: { duration: 0.2 } }} >
                         <Link to={`/blog/${post.slug}`} className="block">
                             <div className="flex flex-col md:flex-row md:items-baseline md:justify-between mb-1">
                                 <h3 className="text-sm font-medium group-hover:text-gray-300 transition-colors">
@@ -46,9 +47,9 @@ export const BlogList: React.FC = () => {
                                 {post.summary}
                             </p>
                         </Link>
-                    </article>
+                    </motion.article>
                 ))}
             </div>
-        </div>
+        </motion.div>
     );
 };

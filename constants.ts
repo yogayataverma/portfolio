@@ -2,7 +2,7 @@ import { ProfileData } from './types';
 
 export const PORTFOLIO_DATA: ProfileData = {
   name: "Yogayata Verma",
-  title: "Web Developer",
+  title: "",
   summary: "A Web Developer with 1+ year of experience in web development, AI integration, and system design, specializing in full-stack, microservices, API integration, and databases. Passionate about building scalable solutions and elevating system performance.",
   navLinks: [
     { label: "home", url: "/" },
@@ -99,7 +99,7 @@ export const PORTFOLIO_DATA: ProfileData = {
     },
     {
       category: "Tools & Technologies",
-      items: "Postman, Swagger, Selenium, Redis, JWT, OpenAI API, PayPal, Chart.js, Webhooks, Ollama"
+      items: "Postman, Swagger, Selenium, Redis, JWT, OpenAI API, PayPal, Chart.js, Webhooks, Ollama, OAuth"
     }
   ],
   socials: [

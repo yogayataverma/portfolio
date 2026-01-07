@@ -1,0 +1,243 @@
+---
+title: 'Git for Beginners: Basics and Essential Commands'
+publishedAt: '2025-12-28'
+summary: 'A beginner-friendly Git guide with core concepts, essential commands, safety tools, and a simple workflow you can practice today.'
+---
+
+Hey, internet!
+
+Most developers use Git daily, but if you're just starting out, it can feel overwhelming. This guide breaks down Git into digestible chunks - core concepts, essential commands, and a workflow you can start using today.
+
+## Core Terms You Need to Know
+
+### Repository (Repo)
+A folder that Git tracks. It contains your project files and a hidden `.git` folder where Git stores all version history.
+
+### Staging Area
+Think of it as a "preview" of your next commit. You add changes here before committing them permanently.
+
+### Commit
+A snapshot of your project at a specific point in time. Each commit has a unique ID and a message describing what changed.
+
+### Branches
+Separate lines of development. The default branch is usually called `main` or `master`.
+
+### HEAD
+A pointer to the current branch/commit you're working on. It's basically "you are here" on the Git timeline.
+
+## Essential Commands
+
+### 1. Initialize a Repository
+
+```bash
+git init
+```
+
+Creates a new Git repository in your current folder. This adds the `.git` directory.
+
+### 2. Check Status
+
+```bash
+git status
+```
+
+Shows which files are modified, staged, or untracked. Use this constantly - it's your Git compass.
+
+### 3. Stage Changes
+
+```bash
+# Stage a specific file
+git add filename.txt
+
+# Stage all changes
+git add .
+```
+
+Moves changes to the staging area, preparing them for commit.
+
+### 4. Commit Changes
+
+```bash
+git commit -m "Your commit message here"
+```
+
+Saves staged changes permanently with a descriptive message.
+
+**Pro tip**: Write clear commit messages! "Fixed bug" is vague. "Fixed login button not responding on mobile" is better.
+
+### 5. View History
+
+```bash
+# See commit history
+git log
+
+# Compact view
+git log --oneline
+```
+
+Shows all commits with their IDs, authors, dates, and messages.
+
+### 6. See What Changed
+
+```bash
+# Changes in working directory (not staged)
+git diff
+
+# Changes in staging area
+git diff --staged
+```
+
+Shows exactly which lines were added, removed, or modified.
+
+## Safety Tools
+
+### Reset: Undo Commits
+
+Git reset has three modes:
+
+#### Soft Reset
+```bash
+git reset --soft HEAD~1
+```
+Undoes the last commit but keeps changes staged. Use when you want to recommit with a better message.
+
+#### Mixed Reset (default)
+```bash
+git reset HEAD~1
+# or
+git reset --mixed HEAD~1
+```
+Undoes the last commit and unstages changes, but keeps them in your working directory.
+
+#### Hard Reset
+```bash
+git reset --hard HEAD~1
+```
+**⚠️ DANGER**: Completely removes the last commit and all changes. Use with caution!
+
+### Stash: Temporary Storage
+
+```bash
+# Save current changes temporarily
+git stash
+
+# List stashed changes
+git stash list
+
+# Restore most recent stash
+git stash pop
+
+# Restore specific stash
+git stash apply stash@{0}
+```
+
+Perfect for when you need to switch tasks but aren't ready to commit.
+
+## A Simple Git Workflow
+
+Here's a step-by-step workflow you can follow on any project:
+
+### 1. Start Your Day
+```bash
+# Check current status
+git status
+
+# See what branch you're on
+git branch
+```
+
+### 2. Make Changes
+Edit your files normally in your code editor.
+
+### 3. Review Changes
+```bash
+# See what you changed
+git diff
+
+# Check status
+git status
+```
+
+### 4. Stage Changes
+```bash
+# Stage specific files
+git add file1.js file2.css
+
+# Or stage everything
+git add .
+```
+
+### 5. Commit
+```bash
+git commit -m "Add user authentication feature"
+```
+
+### 6. Repeat
+Continue this cycle: change → review → stage → commit.
+
+## Practice Exercise
+
+Try this on your computer right now:
+
+```bash
+# 1. Create a practice folder
+mkdir git-practice
+cd git-practice
+
+# 2. Initialize Git
+git init
+
+# 3. Create a file
+echo "Hello Git" > readme.txt
+
+# 4. Check status
+git status
+
+# 5. Stage the file
+git add readme.txt
+
+# 6. Commit
+git commit -m "Initial commit"
+
+# 7. Make a change
+echo "Learning Git!" >> readme.txt
+
+# 8. See the difference
+git diff
+
+# 9. Stage and commit again
+git add readme.txt
+git commit -m "Add learning note"
+
+# 10. View history
+git log --oneline
+```
+
+Congratulations! You just created your first Git repository and made commits.
+
+## Key Takeaways
+
+1. **git status** is your friend - use it constantly
+2. Stage with **git add**, commit with **git commit**
+3. **git diff** shows what changed
+4. **git log** shows history
+5. Use **git stash** when you need to save work temporarily
+6. Be careful with **git reset --hard** - it deletes changes permanently
+
+## What's Next?
+
+Once you're comfortable with these basics, explore:
+- Branching and merging
+- Remote repositories (GitHub, GitLab)
+- Collaboration workflows
+- Git hooks and automation
+
+Git seems complex at first, but these core commands cover 90% of daily usage. Practice them until they become muscle memory.
+
+Want to dive deeper? Check out my other posts on [how Git works internally](https://inside-git.hashnode.dev/inside-git-how-it-works-and-the-role-of-the-git-folder) and [why version control exists](https://before-vcs.hashnode.dev/why-version-control-exists-the-pendrive-problem).
+
+**PS**: If you want a practice routine to become comfortable with Git, let me know! I have exercises that'll get you from beginner to confident in a week.
+
+---
+
+*Questions? Found this helpful? Let me know!*

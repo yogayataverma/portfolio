@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ExperienceItem } from '../types';
 
 interface ExperienceSectionProps {
@@ -7,13 +8,13 @@ interface ExperienceSectionProps {
 
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experiences }) => {
   return (
-    <section className="mb-16">
-      <h2 className="text-base font-mono text-terminal-green mb-8 tracking-wider">
+    <motion.section className="mb-16" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={{ hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } } }} >
+      <motion.h2 className="text-base font-mono text-terminal-green mb-8 tracking-wider" variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5 } } }} >
         <span className="text-terminal-highlight">const</span> <span className="text-terminal-pink">experience</span>
-      </h2>
+      </motion.h2>
       <div className="space-y-10">
         {experiences.map((exp, index) => (
-          <div key={index}>
+          <motion.div key={index} variants={{ hidden: { opacity: 0, x: -40 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, delay: index * 0.1 } } }} >
             <div className="flex flex-col md:flex-row md:items-baseline md:justify-between mb-1">
               <h3 className="text-sm font-medium text-gray-200">{exp.role}</h3>
               <span className="text-xs text-gray-600 font-mono">{exp.period}</span>
@@ -25,16 +26,18 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ experience
 
             <ul className="space-y-2 text-gray-400 text-sm leading-relaxed mb-4">
               {exp.responsibilities.map((resp, idx) => (
-                <li key={idx} className="pl-3 border-l border-gray-800">{resp}</li>
+                <motion.li key={idx} className="pl-3 border-l border-gray-800" variants={{ hidden: { opacity: 0, x: -6 }, visible: { opacity: 1, x: 0, transition: { duration: 0.25, delay: idx * 0.03 } } }}>
+                  {resp}
+                </motion.li>
               ))}
             </ul>
 
             <div className="text-xs text-gray-600">
               {exp.skills}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 };

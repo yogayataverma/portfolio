@@ -1,0 +1,264 @@
+---
+title: 'Inside Git: How It Works and the Role of the .git Folder'
+publishedAt: '2025-12-28'
+summary: 'Ever wondered what Git is actually doing behind the scenes? Explore the .git folder, blob/tree/commit model, and why Git stores snapshots instead of diffs.'
+---
+
+Hey, internet!
+
+Most of us use Git daily... but rarely understand what it's actually doing. When you run `git add` or `git commit`, what's really happening under the hood?
+
+Let's open up the `.git` folder and see how Git actually works internally.
+
+## What's Inside .git?
+
+When you run `git init`, Git creates a `.git` folder. This folder contains everything Git needs to track your project's history.
+
+Here's what's inside:
+
+```
+.git/
+├── objects/      # Where Git stores all your data
+├── refs/         # Pointers to commits (branches, tags)
+├── HEAD          # Points to your current branch
+├── config        # Repository configuration
+├── index         # The staging area
+└── hooks/        # Scripts that run on Git events
+```
+
+The two most important parts are:
+1. **objects/** - Git's database
+2. **refs/** - Pointers to commits
+
+## The Blob / Tree / Commit Model
+
+Git stores data using three types of objects:
+
+### 1. Blob (Binary Large Object)
+
+A blob stores file contents. When you `git add` a file, Git:
+- Compresses the file content
+- Creates a unique ID (SHA-1 hash) based on the content
+- Stores it as a blob object
+
+**Key insight**: Blobs don't store filenames or directory structure - just content.
+
+```bash
+# See a blob
+git cat-file -p <blob-hash>
+```
+
+### 2. Tree
+
+A tree stores directory structure. It contains:
+- References to blobs (files)
+- References to other trees (subdirectories)
+- Filenames and permissions
+
+Think of trees as folders in your commit snapshot.
+
+```bash
+# See a tree
+git cat-file -p <tree-hash>
+```
+
+### 3. Commit
+
+A commit object stores:
+- Reference to a tree (the snapshot)
+- Author and committer info
+- Timestamp
+- Commit message
+- Parent commit(s)
+
+```bash
+# See a commit
+git cat-file -p <commit-hash>
+```
+
+## The Complete Mental Model
+
+When you commit, Git creates this structure:
+
+```
+Commit A
+  ├─ tree (project root)
+  │   ├─ blob: readme.txt
+  │   ├─ blob: app.js
+  │   └─ tree: src/
+  │       └─ blob: index.js
+  └─ parent: Commit B
+```
+
+Each commit points to a complete snapshot of your project at that moment.
+
+## Why Git Stores Snapshots, Not Diffs
+
+This is counterintuitive but crucial: **Git stores complete snapshots, not differences between versions**.
+
+### Other Version Control Systems
+
+Many VCS store the initial file and then deltas (changes):
+
+```
+File v1: "Hello"
+File v2: + " World"  (stored as diff)
+File v3: + "!"       (stored as diff)
+```
+
+To get v3, you need to apply all diffs in sequence.
+
+### How Git Does It
+
+Git stores complete snapshots:
+
+```
+Commit 1: "Hello"
+Commit 2: "Hello World"
+Commit 3: "Hello World!"
+```
+
+Each commit is a full snapshot.
+
+**"But doesn't that waste space?"**
+
+No! Git is smart about storage:
+1. **Content-based addressing**: Identical content gets one blob (shared across commits)
+2. **Compression**: Git compresses objects
+3. **Packfiles**: Git eventually combines objects into efficient packfiles
+
+## How git add Actually Works
+
+When you run `git add file.txt`:
+
+1. Git reads the file content
+2. Creates a SHA-1 hash of the content
+3. Compresses and stores it as a blob in `.git/objects/`
+4. Updates `.git/index` (staging area) with the filename → blob mapping
+
+The file is now staged.
+
+## How git commit Actually Works
+
+When you run `git commit -m "message"`:
+
+1. Git reads the staging area (`.git/index`)
+2. Creates tree objects for the directory structure
+3. Creates a commit object that points to the root tree
+4. Updates the current branch reference to point to this new commit
+5. Updates HEAD
+
+Let's trace through an example:
+
+```bash
+# Initial state
+echo "Hello" > file.txt
+git add file.txt
+git commit -m "First commit"
+```
+
+What Git does:
+1. Creates blob for "Hello"
+2. Creates tree containing "file.txt → blob"
+3. Creates commit pointing to tree
+4. Updates main branch to point to commit
+
+```bash
+# Make a change
+echo "World" >> file.txt
+git add file.txt
+git commit -m "Second commit"
+```
+
+What Git does:
+1. Creates NEW blob for "Hello\nWorld"
+2. Creates NEW tree containing "file.txt → new blob"
+3. Creates NEW commit pointing to new tree (and previous commit as parent)
+4. Updates main branch to point to new commit
+
+## Understanding HEAD
+
+HEAD is simply a pointer to your current location in the commit graph.
+
+Usually HEAD points to a branch, which points to a commit:
+
+```
+HEAD → main → Commit C
+```
+
+When you commit:
+1. Git creates a new commit
+2. Updates the branch to point to the new commit
+3. HEAD still points to the branch (which now points to the new commit)
+
+## Viewing Git Objects
+
+Want to explore? Try these commands:
+
+```bash
+# List all objects
+find .git/objects -type f
+
+# View a commit
+git cat-file -p HEAD
+
+# View the tree that commit points to
+git cat-file -p HEAD^{tree}
+
+# View a blob
+git cat-file -p <blob-hash>
+
+# See object type
+git cat-file -t <hash>
+```
+
+## Why This Matters
+
+Understanding Git internals helps you:
+
+1. **Debug issues**: Know what went wrong and why
+2. **Use advanced features**: Rebase, cherry-pick, reflog make sense
+3. **Recover data**: Nothing is truly deleted until garbage collection
+4. **Optimize workflows**: Understand performance implications
+
+## Key Takeaways
+
+1. Git stores data in **blobs** (content), **trees** (structure), and **commits** (snapshots)
+2. Commits are **complete snapshots**, not diffs
+3. Objects are stored in `.git/objects/` and identified by SHA-1 hashes
+4. `git add` creates blobs and updates the staging area
+5. `git commit` creates tree and commit objects
+6. Everything is content-addressed - same content = same hash
+
+## Deep Dive Exercise
+
+Try this:
+
+```bash
+# Initialize a repo
+git init test-repo
+cd test-repo
+
+# Create and commit a file
+echo "test" > file.txt
+git add file.txt
+git commit -m "Initial"
+
+# Explore the .git folder
+ls .git/objects/
+find .git/objects -type f
+
+# View objects
+git cat-file -p HEAD
+git cat-file -p HEAD^{tree}
+```
+
+You'll see exactly how Git stores your commit!
+
+Understanding Git's internals transforms it from "magic commands I memorized" to "a tool I truly understand." Once you see how it works, Git becomes predictable and powerful.
+
+Want more? Check out my beginner's guide to [Git basics and essential commands](https://simple-git.hashnode.dev/git-for-beginners-basics-and-essential-commands).
+
+---
+
+*Did this help demystify Git? Let me know what you'd like to explore next!*

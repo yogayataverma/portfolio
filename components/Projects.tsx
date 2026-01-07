@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ProjectItem } from '../types';
 
 interface ProjectsProps {
@@ -7,15 +8,20 @@ interface ProjectsProps {
 
 export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
     return (
-        <section className="mb-16 animate-fade-in">
-            <h2 className="text-base font-mono text-terminal-green mb-8 tracking-wider">
+        <motion.section className="mb-16" initial="hidden" animate="visible" variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.12 } } }} >
+            <motion.h2 className="text-base font-mono text-terminal-green mb-8 tracking-wider" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} >
                 <span className="text-terminal-highlight">var</span> <span className="text-terminal-pink">projects</span>
-            </h2>
+            </motion.h2>
             <div className="grid grid-cols-1 gap-8">
                 {projects.map((project, index) => (
-                    <div
+                    <motion.div
                         key={index}
                         className="group"
+                        variants={{
+                            hidden: { opacity: 0, y: 40 },
+                            visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+                        }}
+                        whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
                     >
                         <div className="flex justify-between items-baseline mb-2">
                             <h3 className="text-sm font-medium text-gray-200">
@@ -45,9 +51,9 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                                 </span>
                             ))}
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
-        </section>
+        </motion.section>
     );
 };

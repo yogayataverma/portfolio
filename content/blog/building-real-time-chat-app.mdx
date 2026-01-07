@@ -1,0 +1,47 @@
+---
+title: 'Building a Scalable Real-Time Chat Application'
+publishedAt: '2025-11-15'
+summary: 'Lessons learned from building Convo - a real-time chat app with Socket.IO, Redis, and MongoDB handling thousands of concurrent users.'
+---
+
+When I set out to build **Convo**, I wanted to create more than just another chat app. The goal was to build something that could handle real-time communication at scale while maintaining security and performance.
+
+## The Challenge
+
+Building a real-time chat application that supports text, multimedia, and group chats while handling thousands of concurrent connections isn't trivial. The main challenges were:
+
+- **Latency**: Messages needed to be delivered instantly
+- **Scalability**: The system had to handle growing user bases
+- **Persistence**: Chat history needed to be stored efficiently
+- **Security**: All messages had to be encrypted
+
+## The Tech Stack
+
+After evaluating various options, I settled on:
+
+- **Socket.IO** for real-time bidirectional communication
+- **Redis** for caching and pub/sub messaging
+- **MongoDB** for persistent storage with compound indexes
+- **JWT** for secure authentication
+
+## Key Implementation Details
+
+### Redis for Performance
+
+One of the best decisions was leveraging Redis for caching frequently accessed data. This dramatically improved response times for active conversations. We used Redis pub/sub to handle message distribution across multiple server instances.
+
+### MongoDB Indexing Strategy
+
+Creating compound indexes on `senderId` and `timestamp` made retrieving chat history lightning fast. This seemingly simple optimization reduced query times by over 70%.
+
+### Encryption
+
+Every message payload is encrypted before transmission. We implemented end-to-end encryption to ensure privacy, even if the server is compromised.
+
+## Results
+
+The final application handles thousands of concurrent connections with sub-100ms latency. The architecture is horizontally scalable, and the security model gives users confidence in their privacy.
+
+Building Convo taught me that real-time systems require careful attention to both architecture and implementation details. Every millisecond counts when users expect instant communication.
+
+Check out the live demo at [connectify-connect.netlify.app](https://connectify-connect.netlify.app/)
